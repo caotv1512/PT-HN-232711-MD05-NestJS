@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { ProductsRepository } from './product.repository';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductsRepository } from './product.repository';
 
 @Injectable()
 export class ProductsService {
@@ -9,7 +9,8 @@ export class ProductsService {
     private readonly productRepository: ProductsRepository
   ) {}
   create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+    const product = this.productRepository.create(createProductDto);
+    return product;
   }
 
  async findAll() {
@@ -29,7 +30,7 @@ export class ProductsService {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number) {
+    return await this.productRepository.remove(id);
   }
 }
